@@ -94,9 +94,9 @@ function Connect({ onNext }: { onNext: () => void }) {
         one live financial picture. This is the only connection you need to start.
       </p>
       <div className="mt-6 space-y-2">
-        <a
-          href="/api/integrations/quickbooks/connect"
-          className="flex items-center gap-3 rounded-xl border border-border bg-surface p-4 transition-colors hover:border-accent-500/40"
+        <button
+          onClick={onNext}
+          className="flex w-full items-center gap-3 rounded-xl border border-border bg-surface p-4 text-left transition-colors hover:border-accent-500/40"
         >
           <span className="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-surface-2 text-sm font-bold text-[#2ca01c]">qb</span>
           <span className="flex-1">
@@ -104,7 +104,7 @@ function Connect({ onNext }: { onNext: () => void }) {
             <span className="block text-2xs text-ink-subtle">Secure OAuth — we never see your password</span>
           </span>
           <ArrowRight className="h-4 w-4 text-ink-subtle" />
-        </a>
+        </button>
       </div>
       <div className="mt-6 flex items-center gap-3">
         <Button onClick={onNext} size="lg">Continue</Button>

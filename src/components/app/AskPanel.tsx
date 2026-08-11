@@ -3,15 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import { Sparkles, X, CornerDownLeft, Loader2 } from "lucide-react";
 import { cn } from "@/lib/cn";
+import { reason, type AiAnswer } from "@/lib/ai/reasoner";
 
-interface AskResult {
-  conclusion: string;
-  evidence: string[];
-  impact?: string;
-  recommendation: string;
-  grounded: boolean;
-  provider: string;
-}
+type AskResult = AiAnswer;
 
 const SUGGESTIONS = [
   "Can we afford a $60,000 inventory purchase this week?",
@@ -41,26 +35,24 @@ export function AskPanel({ open, onClose }: { open: boolean; onClose: () => void
     return () => window.removeEventListener("keydown", onKey);
   }, [open, onClose]);
 
-  async function ask(question: string) {
+  function ask(question: string) {
     const text = question.trim();
     if (!text) return;
     setQ(text);
     setLoading(true);
     setError(null);
     setResult(null);
-    try {
-      const res = await fetch("/api/ask", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question: text }),
-      });
-      if (!res.ok) throw new Error(`Request failed (${res.status})`);
-      setResult(await res.json());
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Something went wrong.");
-    } finally {
-      setLoading(false);
-    }
+    // The reasoner is pure and deterministic — it runs entirely in the browser
+    // against the same computed financial state, so the demo needs no server.
+    setTimeout(() => {
+      try {
+        setResult(reason(text));
+      } catch (e) {
+        setError(e instanceof Error ? e.message : "Something went wrong.");
+      } finally {
+        setLoading(false);
+      }
+    }, 320);
   }
 
   return (

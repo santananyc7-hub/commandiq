@@ -54,7 +54,7 @@ export default function LandingPage() {
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 bg-cover bg-center opacity-50"
-          style={{ backgroundImage: "url(/hero.png)" }}
+          style={{ backgroundImage: `url(${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/hero.png)` }}
         />
         <div
           className="pointer-events-none absolute inset-0"

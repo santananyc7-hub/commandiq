@@ -146,16 +146,14 @@ function IntegrationsPanel({
   const meta = STATUS_META[status];
   const Icon = meta.icon;
 
-  async function syncNow() {
+  function syncNow() {
+    // Demo build: simulate a sync client-side (a live deployment with a server
+    // would call the QuickBooks sync endpoint here).
     setStatus("syncing");
-    try {
-      const res = await fetch("/api/integrations/quickbooks/sync", { method: "POST" });
-      const json = await res.json();
-      setLastSync(json.lastSync ?? new Date().toISOString());
+    setTimeout(() => {
+      setLastSync(new Date().toISOString());
       setStatus("connected");
-    } catch {
-      setStatus("error");
-    }
+    }, 900);
   }
 
   return (
@@ -184,7 +182,7 @@ function IntegrationsPanel({
           <div className="flex items-center gap-2">
             {status === "disconnected" ? (
               <a
-                href="/api/integrations/quickbooks/connect"
+                href="/onboarding"
                 className="inline-flex items-center gap-1.5 rounded-lg bg-accent-600 px-3.5 py-2 text-sm font-medium text-white hover:bg-accent-500"
               >
                 <Plug className="h-4 w-4" /> Connect QuickBooks
