@@ -1,0 +1,200 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * CommandIQ theme tokens.
+ * Dark is the product identity (a financial command center) and the default.
+ * `[data-theme="light"]` on <html> flips to a calm daylight theme.
+ * Colors are stored as raw "R G B" triplets so Tailwind's <alpha-value> works.
+ */
+:root,
+[data-theme="dark"] {
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* Surfaces — near-black graphite with a subtle cool-blue tint */
+  --canvas: 8 10 15; /* #080a0f app background */
+  --surface: 14 18 26; /* cards */
+  --surface-2: 20 25 35; /* insets / table headers */
+  --surface-3: 28 34 47; /* hover / raised */
+  --overlay: 17 22 31;
+  --border: 33 40 54;
+  --border-strong: 50 60 77;
+
+  /* Text — soft white → cool gray */
+  --ink: 234 238 245;
+  --ink-muted: 155 166 183;
+  --ink-subtle: 106 117 134;
+
+  /* Intelligence accent — a cool, precise azure */
+  --accent-50: 16 33 56;
+  --accent-100: 20 45 80;
+  --accent-200: 26 64 116;
+  --accent-300: 40 102 178;
+  --accent-400: 66 148 238;
+  --accent-500: 92 176 255;
+  --accent-600: 58 150 248;
+  --accent-700: 150 198 255;
+  --accent-800: 196 223 255;
+  --accent-900: 224 241 255;
+
+  /* Financial status — used sparingly */
+  --positive-soft: 14 46 34;
+  --positive: 46 205 130;
+  --positive-strong: 120 230 174;
+
+  --negative-soft: 52 22 26;
+  --negative: 240 96 96;
+  --negative-strong: 250 150 150;
+
+  /* Severity */
+  --critical: 240 96 96;
+  --high: 244 150 74;
+  --watch: 232 196 88;
+  --info: 122 148 178;
+
+  --shadow: 0 0 0;
+}
+
+[data-theme="light"] {
+  --canvas: 244 246 250; /* app background */
+  --surface: 255 255 255; /* cards */
+  --surface-2: 238 242 248; /* insets / table headers */
+  --surface-3: 230 235 243;
+  --overlay: 255 255 255;
+  --border: 222 228 238;
+  --border-strong: 199 208 222;
+
+  --ink: 15 23 38; /* graphite ink */
+  --ink-muted: 82 96 116;
+  --ink-subtle: 128 140 158;
+
+  --accent-50: 233 243 255;
+  --accent-100: 210 230 253;
+  --accent-200: 174 208 249;
+  --accent-300: 126 176 242;
+  --accent-400: 66 136 228;
+  --accent-500: 28 108 220;
+  --accent-600: 16 92 204;
+  --accent-700: 18 74 164;
+  --accent-800: 20 58 126;
+  --accent-900: 16 42 86;
+
+  --positive-soft: 219 247 231;
+  --positive: 22 158 96;
+  --positive-strong: 17 122 74;
+
+  --negative-soft: 253 226 228;
+  --negative: 214 62 62;
+  --negative-strong: 176 40 40;
+
+  --critical: 214 62 62;
+  --high: 209 108 26;
+  --watch: 176 132 12;
+  --info: 100 116 139;
+
+  --shadow: 15 23 42;
+}
+
+* {
+  border-color: rgb(var(--border));
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+[data-theme="light"] {
+  color-scheme: light;
+}
+
+body {
+  background-color: rgb(var(--canvas));
+  color: rgb(var(--ink));
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "cv11", "ss01";
+}
+
+/* Tabular figures for all financial numbers */
+.tabular {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* Thin, refined scrollbars */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--border-strong));
+  border-radius: 999px;
+  border: 3px solid rgb(var(--canvas));
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--ink-subtle));
+}
+
+/* Focus ring */
+:focus-visible {
+  outline: 2px solid rgb(var(--accent-500));
+  outline-offset: 2px;
+}
+
+/* Subtle grid texture for hero / command surfaces */
+.grid-texture {
+  background-image:
+    linear-gradient(rgb(var(--border) / 0.6) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--border) / 0.6) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+@layer components {
+  .field {
+    width: 100%;
+    height: 2.75rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgb(var(--border));
+    background-color: rgb(var(--surface-2));
+    padding: 0 0.75rem;
+    font-size: 0.875rem;
+    color: rgb(var(--ink));
+    transition: border-color 0.15s, background-color 0.15s;
+  }
+  .field::placeholder {
+    color: rgb(var(--ink-subtle));
+  }
+  .field:focus {
+    outline: none;
+    border-color: rgb(var(--accent-400));
+    background-color: rgb(var(--surface));
+  }
+}
+
+@layer utilities {
+  .skeleton {
+    position: relative;
+    overflow: hidden;
+    background: rgb(var(--surface-2));
+  }
+  .skeleton::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgb(var(--border) / 0.7),
+      transparent
+    );
+    animation: shimmer 1.6s infinite;
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+}
